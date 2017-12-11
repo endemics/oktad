@@ -34,6 +34,7 @@ func launch(cmd string, args []string, creds *credentials.Credentials, awsRegion
 		fmt.Sprintf(envVarFmt, "AWS_SESSION_TOKEN", cv.SessionToken),
 		fmt.Sprintf(envVarFmt, "AWS_ACCESS_KEY_ID", cv.AccessKeyID),
 		fmt.Sprintf(envVarFmt, "AWS_SECRET_ACCESS_KEY", cv.SecretAccessKey),
+		fmt.Sprintf(envVarFmt, "AWS_REGION", awsRegion),
 		fmt.Sprintf(envVarFmt, "AWS_DEFAULT_REGION", awsRegion),
 	)
 
