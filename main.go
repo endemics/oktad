@@ -80,7 +80,7 @@ func main() {
 		if err == nil {
 			debug("found cached credentials, going to use them")
 			// if we could load creds, use them!
-			err := prepAndLaunch(args, maybeCreds)
+			err := prepAndLaunch(args, maybeCreds, acfg.Region)
 			if err != nil {
 				fmt.Println("Error launching program: ", err)
 			}
@@ -174,7 +174,7 @@ func main() {
 	}
 
 	debug("Everything looks good; launching your program...")
-	err = prepAndLaunch(args, finalCreds)
+	err = prepAndLaunch(args, finalCreds, acfg.Region)
 	if err != nil {
 		fmt.Println("Error launching program: ", err)
 	}

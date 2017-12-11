@@ -10,7 +10,7 @@ import "github.com/aws/aws-sdk-go/aws/credentials"
 var debugLaunch = debug.Debug("oktad:launch")
 
 // runs some program
-func launch(cmd string, args []string, creds *credentials.Credentials) error {
+func launch(cmd string, args []string, creds *credentials.Credentials, awsRegion string) error {
 	debugLaunch("launching program %s with args %s", cmd, args)
 	e := exec.Command(
 		cmd,
@@ -34,6 +34,8 @@ func launch(cmd string, args []string, creds *credentials.Credentials) error {
 		fmt.Sprintf(envVarFmt, "AWS_SESSION_TOKEN", cv.SessionToken),
 		fmt.Sprintf(envVarFmt, "AWS_ACCESS_KEY_ID", cv.AccessKeyID),
 		fmt.Sprintf(envVarFmt, "AWS_SECRET_ACCESS_KEY", cv.SecretAccessKey),
+		fmt.Sprintf(envVarFmt, "AWS_REGION", awsRegion),
+		fmt.Sprintf(envVarFmt, "AWS_DEFAULT_REGION", awsRegion),
 	)
 
 	return e.Run()
@@ -43,7 +45,7 @@ func launch(cmd string, args []string, creds *credentials.Credentials) error {
 // expected input includes arguments from the command line once the program name
 // (in this case ./oktad) is removed
 // and then AWS credentials to put in the environment of the launched program
-func prepAndLaunch(args []string, creds *credentials.Credentials) error {
+func prepAndLaunch(args []string, creds *credentials.Credentials, awsRegion string) error {
 	// WHOA!
 	var cmd string
 	var cArgs []string
@@ -65,7 +67,7 @@ func prepAndLaunch(args []string, creds *credentials.Credentials) error {
 		}
 	}
 
-	err := launch(cmd, cArgs, creds)
+	err := launch(cmd, cArgs, creds, awsRegion)
 	if err != nil {
 		debugLaunch("caught error from launcher, %s", err)
 	}
